@@ -13,7 +13,7 @@ public class StatisticsDisplay implements Observer {
     public StatisticsDisplay() {
 
         frame = new JFrame();
-        frame.setSize(200, 200);
+        frame.setSize(250, 250);
         frame.setTitle("Average Condition");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setVisible(true);
@@ -38,6 +38,18 @@ public class StatisticsDisplay implements Observer {
             area.setBackground(Color.ORANGE);
             area.setText("Average Condition:\n");
             area.append("Temperature = " + avg);
+        
+        }
+        if (data instanceof OceanData) {
+        	OceanData oceanData = (OceanData) data;
+        	
+        	if (prevTemp == 0)
+        		prevTemp = oceanData.getWaveHeight();
+        	double avg = (prevTemp + oceanData.getWaveHeight()) /3;
+        	
+        	area.setBackground(Color.ORANGE);
+            area.setText("Average Condition:\n");
+            area.append("Wave Height = " + avg);
         }
     }
 }
