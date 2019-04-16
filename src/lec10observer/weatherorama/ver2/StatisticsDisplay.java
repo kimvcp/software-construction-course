@@ -6,22 +6,36 @@ import java.awt.*;
 public class StatisticsDisplay implements Observer {
 
     private double prevTemp;
+    private double prevWave;
 
-    private JFrame frame;
+    private JFrame weatherFrame;
+    private JFrame oceanFrame;
     private JTextArea area;
-
+    private JTextArea ocean;
+    
     public StatisticsDisplay() {
 
-        frame = new JFrame();
-        frame.setSize(250, 250);
-        frame.setTitle("Average Condition");
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setVisible(true);
+        weatherFrame = new JFrame();
+        weatherFrame.setSize(250, 250);
+        weatherFrame.setTitle("Average Condition");
+        weatherFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        weatherFrame.setVisible(true);
+        
+        oceanFrame = new JFrame();
+        oceanFrame.setSize(250, 250);
+        oceanFrame.setTitle("Average Wave Height");
+        oceanFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        oceanFrame.setVisible(true);
 
         area = new JTextArea(200, 200);
-        frame.add(area);
+        weatherFrame.add(area);
         area.setBackground(Color.ORANGE);
         area.setText("Average Condition:\n");
+        
+        ocean = new JTextArea(200, 200);
+        oceanFrame.add(ocean);
+        ocean.setBackground(Color.green);
+        ocean.setText("Average Wave Height:\n");
 
     }
 
@@ -32,24 +46,23 @@ public class StatisticsDisplay implements Observer {
 
             if (prevTemp == 0)
                 prevTemp = weatherData.getTemperature();
-            double avg = (prevTemp + weatherData.getTemperature()) / 2;
-            prevTemp = avg;
+            prevTemp = (prevTemp + weatherData.getTemperature()) / 2;
 
             area.setBackground(Color.ORANGE);
             area.setText("Average Condition:\n");
-            area.append("Temperature = " + avg);
+            area.append("Temperature = " + prevTemp);
         
         }
         if (data instanceof OceanData) {
         	OceanData oceanData = (OceanData) data;
-        	
-        	if (prevTemp == 0)
-        		prevTemp = oceanData.getWaveHeight();
-        	double avg = (prevTemp + oceanData.getWaveHeight()) /3;
-        	
-        	area.setBackground(Color.ORANGE);
-            area.setText("Average Condition:\n");
-            area.append("Wave Height = " + avg);
+ 
+        	if (prevWave == 0)
+        		prevWave = oceanData.getWaveHeight();
+        	prevWave  = (prevWave + oceanData.getWaveHeight()) / 2;
+        			
+        	ocean.setBackground(Color.green);
+            ocean.setText("Average Wave Height:\n");
+            ocean.append("Wave Height = " + prevWave + "\n");
         }
     }
 }
